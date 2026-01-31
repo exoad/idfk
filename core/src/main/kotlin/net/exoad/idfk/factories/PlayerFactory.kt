@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.math.Vector2
 import net.exoad.idfk.ecs.component.*
+import net.exoad.idfk.ecs.attach
 
 object PlayerFactory {
     fun createPlayer(
@@ -15,20 +16,18 @@ object PlayerFactory {
         maxHealth: Int
     ): Entity {
         assert(id.isNotBlank())
-        val player = Entity().apply {
-            add(PositionComponent(position.x, position.y))
-            add(VelocityComponent(0f, 0f))
-            add(
-                if (size == null) {
-                    SizeComponent(96f, 72f)
-                } else {
-                    SizeComponent(size.x, size.y)
-                }
-            )
-            add(TextureComponent("logo.png"))
-            add(PlayerComponent())
-            add(IdComponent(id))
-            add(HealthComponent(health, maxHealth))
+        val player = Entity().attach {
+            +PositionComponent(position.x, position.y)
+            +VelocityComponent(0f, 0f)
+            if (size == null) {
+                +SizeComponent(96f, 72f)
+            } else {
+                +SizeComponent(size.x, size.y)
+            }
+            +TextureComponent("logo.png")
+            +PlayerComponent()
+            +IdComponent(id)
+            +HealthComponent(health, maxHealth)
         }
         engine.addEntity(player)
         return player

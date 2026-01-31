@@ -14,6 +14,7 @@ import ktx.async.KtxAsync
 import ktx.graphics.use
 import net.exoad.idfk.ecs.system.*
 import net.exoad.idfk.levels.LevelManager
+import net.exoad.idfk.ecs.attach
 
 class GameMain : KtxGame<KtxScreen>() {
     override fun create() {
@@ -35,22 +36,20 @@ class Screen : KtxScreen {
         val generator =
             FreeTypeFontGenerator(Gdx.files.internal("assets/Pizel.ttf"))
         generator.dispose()
-        with(engine) {
-            addSystem(HudSystem())
-            addSystem(PlayerInputSystem())
-            addSystem(MovementSystem())
-            addSystem(HealthOrbSystem())
-            addSystem(CollisionSystem())
-            addSystem(FloatingTextSystem())
-            addSystem(
-                RenderSystem(
-                    batch,
-                    generator.generateFont(FreeTypeFontParameter().apply {
-                        size = 16
-                    })
-                )
+        engine.attach {
+            +HudSystem()
+            +PlayerInputSystem()
+            +MovementSystem()
+            +HealthOrbSystem()
+            +CollisionSystem()
+            +FloatingTextSystem()
+            +RenderSystem(
+                batch,
+                generator.generateFont(FreeTypeFontParameter().apply {
+                    size = 16
+                })
             )
-            addSystem(PositionDisplaySystem())
+            +PositionDisplaySystem()
         }
         LevelManager.load(engine)
     }

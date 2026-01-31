@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.math.Vector2
 import net.exoad.idfk.ecs.component.*
+import net.exoad.idfk.ecs.attach
 
 object PlatformFactory {
     fun createPlatform(
@@ -13,21 +14,19 @@ object PlatformFactory {
         size: Vector2? = null,
         id: String? = null
     ): Entity {
-        val platform = Entity().apply {
-            add(PositionComponent(position.x, position.y))
-            add(
-                if (size == null) {
-                    SizeComponent(300f, 45f)
-                } else {
-                    SizeComponent(size.x, size.y)
-                }
-            )
-            add(TextureComponent("logo.png"))
-            add(PlatformComponent(collisionTypes.fold(0) { acc, type ->
+        val platform = Entity().attach {
+            +(PositionComponent(position.x, position.y))
+            if (size == null) {
+                +SizeComponent(300f, 45f)
+            } else {
+                +SizeComponent(size.x, size.y)
+            }
+            +TextureComponent("logo.png")
+            +PlatformComponent(collisionTypes.fold(0) { acc, type ->
                 acc or type
-            }))
+            })
             if (id != null) {
-                add(IdComponent(id))
+                +IdComponent(id)
             }
         }
         engine.addEntity(platform)

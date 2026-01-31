@@ -8,6 +8,7 @@ import net.exoad.idfk.ecs.component.ColorComponent
 import net.exoad.idfk.ecs.component.IdComponent
 import net.exoad.idfk.ecs.component.PositionComponent
 import net.exoad.idfk.ecs.component.TextComponent
+import net.exoad.idfk.ecs.attach
 
 object TextFactory {
     fun createText(
@@ -17,13 +18,13 @@ object TextFactory {
         id: String? = null,
         color: Color
     ): Entity {
-        val textEntity = Entity().apply {
-            add(PositionComponent(position.x, position.y))
-            add(TextComponent(text))
+        val textEntity = Entity().attach {
+            +PositionComponent(position.x, position.y)
+            +TextComponent(text)
             if (id != null) {
-                add(IdComponent(id))
+                +IdComponent(id)
             }
-            add(ColorComponent(color))
+            +ColorComponent(color)
         }
         engine.addEntity(textEntity)
         return textEntity
