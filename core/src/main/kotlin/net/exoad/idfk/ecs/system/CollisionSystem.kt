@@ -25,8 +25,8 @@ class CollisionSystem : IteratingSystem(
 
     companion object {
         const val SCREEN_LEFT = 0f
-        const val SCREEN_RIGHT = 854f
-        const val SCREEN_TOP = 480f
+        const val SCREEN_RIGHT = 1920f
+        const val SCREEN_TOP = 1080f
         const val SCREEN_BOTTOM = 0f
         const val GRAVITY = 500f
         const val SPEED = 200f
@@ -60,7 +60,8 @@ class CollisionSystem : IteratingSystem(
                 if (position.x < otherPos.x + otherSize.width && position.x + size.width > otherPos.x &&
                     position.y < otherPos.y + otherSize.height && position.y + size.height > otherPos.y
                 ) {
-                    val canCollideSide = if (velocity.x > 0) PlatformComponent.COLLIDE_LEFT else PlatformComponent.COLLIDE_RIGHT
+                    val canCollideSide =
+                        if (velocity.x > 0) PlatformComponent.COLLIDE_LEFT else PlatformComponent.COLLIDE_RIGHT
                     if (platform.canCollide(canCollideSide)) {
                         position.x -= velocity.x * deltaTime
                         velocity.x = 0f

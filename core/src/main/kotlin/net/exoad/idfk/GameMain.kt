@@ -28,9 +28,11 @@ class Screen : KtxScreen {
     private val engine = Engine()
 
     private val camera = OrthographicCamera()
-    private val viewport = FitViewport(854f, 480f, camera)
+    private val viewport = FitViewport(1920f, 1080f, camera)
 
     init {
+        viewport.update(Gdx.graphics.width, Gdx.graphics.height, true)
+
         val generator = FreeTypeFontGenerator(Gdx.files.internal("assets/Pizel.ttf"))
         val parameter = FreeTypeFontParameter().apply {
             size = 16
@@ -49,7 +51,7 @@ class Screen : KtxScreen {
     }
 
     override fun resize(width: Int, height: Int) {
-        viewport.update(width, height)
+        viewport.update(width, height, true)
     }
 
     override fun render(delta: Float) {

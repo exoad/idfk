@@ -17,7 +17,7 @@ object PlatformFactory {
             add(PositionComponent(position.x, position.y))
             add(
                 if (size == null) {
-                    SizeComponent(100f, 20f)
+                    SizeComponent(300f, 45f)
                 } else {
                     SizeComponent(size.x, size.y)
                 }

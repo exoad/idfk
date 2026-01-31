@@ -18,7 +18,7 @@ object PlayerFactory {
             add(VelocityComponent(0f, 0f))
             add(
                 if (size == null) {
-                    SizeComponent(32f, 32f)
+                    SizeComponent(96f, 72f)
                 } else {
                     SizeComponent(size.x, size.y)
                 }
