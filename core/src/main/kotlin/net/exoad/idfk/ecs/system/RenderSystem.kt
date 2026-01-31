@@ -14,7 +14,10 @@ import ktx.ashley.mapperFor
 import ktx.assets.toInternalFile
 import net.exoad.idfk.ecs.component.*
 
-class RenderSystem(private val batch: SpriteBatch, private val font: BitmapFont) :
+class RenderSystem(
+    private val batch: SpriteBatch,
+    private val font: BitmapFont
+) :
     IteratingSystem(allOf(PositionComponent::class).get()) {
     private val positionMapper = mapperFor<PositionComponent>()
     private val textureMapper = mapperFor<TextureComponent>()
@@ -25,7 +28,10 @@ class RenderSystem(private val batch: SpriteBatch, private val font: BitmapFont)
     private var debugMode = false
 
     override fun update(deltaTime: Float) {
-        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.G)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) && Gdx.input.isKeyJustPressed(
+                Input.Keys.G
+            )
+        ) {
             debugMode = !debugMode
         }
         super.update(deltaTime)
@@ -47,7 +53,13 @@ class RenderSystem(private val batch: SpriteBatch, private val font: BitmapFont)
                 Texture(texturePath.toInternalFile())
             }
             batch.color = colorComp?.color ?: Color.WHITE
-            batch.draw(texture, position.x, position.y, sizeComp.width, sizeComp.height)
+            batch.draw(
+                texture,
+                position.x,
+                position.y,
+                sizeComp.width,
+                sizeComp.height
+            )
             batch.color = Color.MAGENTA
         } else if (textComp != null) {
             font.color = colorComp?.color ?: Color.WHITE

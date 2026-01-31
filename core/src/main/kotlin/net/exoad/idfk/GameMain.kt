@@ -32,19 +32,24 @@ class Screen : KtxScreen {
 
     init {
         viewport.update(Gdx.graphics.width, Gdx.graphics.height, true)
-
-        val generator = FreeTypeFontGenerator(Gdx.files.internal("assets/Pizel.ttf"))
-        val parameter = FreeTypeFontParameter().apply {
-            size = 16
-        }
-        val font = generator.generateFont(parameter)
+        val generator =
+            FreeTypeFontGenerator(Gdx.files.internal("assets/Pizel.ttf"))
         generator.dispose()
-
         with(engine) {
+            addSystem(HudSystem())
             addSystem(PlayerInputSystem())
             addSystem(MovementSystem())
+            addSystem(HealthOrbSystem())
             addSystem(CollisionSystem())
-            addSystem(RenderSystem(batch, font))
+            addSystem(FloatingTextSystem())
+            addSystem(
+                RenderSystem(
+                    batch,
+                    generator.generateFont(FreeTypeFontParameter().apply {
+                        size = 16
+                    })
+                )
+            )
             addSystem(PositionDisplaySystem())
         }
         LevelManager.load(engine)

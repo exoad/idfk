@@ -10,7 +10,9 @@ object PlayerFactory {
         engine: Engine,
         position: Vector2,
         size: Vector2? = null,
-        id: String = "player"
+        id: String = "player",
+        health: Int,
+        maxHealth: Int
     ): Entity {
         assert(id.isNotBlank())
         val player = Entity().apply {
@@ -26,6 +28,7 @@ object PlayerFactory {
             add(TextureComponent("logo.png"))
             add(PlayerComponent())
             add(IdComponent(id))
+            add(HealthComponent(health, maxHealth))
         }
         engine.addEntity(player)
         return player

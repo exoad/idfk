@@ -13,7 +13,7 @@ object TextFactory {
     fun createText(
         engine: Engine,
         position: Vector2,
-        text: String,
+        text: String = "",
         id: String? = null,
         color: Color
     ): Entity {
