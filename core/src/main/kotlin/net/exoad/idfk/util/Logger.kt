@@ -1,4 +1,4 @@
-package net.exoad.idfk.utils
+package net.exoad.idfk.util
 
 object Logger {
     fun info(message: String) {

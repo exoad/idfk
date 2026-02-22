@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.math.Vector2
 import net.exoad.idfk.ecs.component.*
-import net.exoad.idfk.ecs.attach
 
 object PlayerFactory {
     fun createPlayer(
@@ -12,22 +11,32 @@ object PlayerFactory {
         position: Vector2,
         size: Vector2? = null,
         id: String = "player",
-        health: Int,
-        maxHealth: Int
     ): Entity {
         assert(id.isNotBlank())
-        val player = Entity().attach {
-            +PositionComponent(position.x, position.y)
-            +VelocityComponent(0f, 0f)
-            if (size == null) {
-                +SizeComponent(96f, 72f)
-            } else {
-                +SizeComponent(size.x, size.y)
-            }
-            +TextureComponent("logo.png")
-            +PlayerComponent()
-            +IdComponent(id)
-            +HealthComponent(health, maxHealth)
+        val playerSize = size ?: Vector2(16f, 16f)
+        val player = Entity().apply {
+            add(IdComponent(id))
+            add(PositionComponent(position.x, position.y))
+            add(VelocityComponent(0f, 0f))
+            add(SizeComponent(playerSize.x, playerSize.y))
+            add(DirectionComponent())
+            add(
+                AtlasComponent(
+                    texturePath = "player.png",
+                    frameWidth = 16,
+                    frameHeight = 16,
+                    framesPerRow = 3
+                )
+            )
+            add(
+                AnimationComponent(
+                    frames = intArrayOf(0),
+                    frameDuration = 0.15f,
+                    looping = true,
+                    isPlaying = false
+                )
+            )
+            add(PlayerComponent())
         }
         engine.addEntity(player)
         return player
