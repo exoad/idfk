@@ -24,7 +24,7 @@ fun Entity.attach(block: EntityDSL.() -> Unit): Entity {
 @JvmInline
 value class EngineDSL(val engine: Engine) {
     operator fun EntitySystem.unaryPlus() {
-        engine.addSystem(this)
+        this@EngineDSL.engine.addSystem(this)
     }
 }
 

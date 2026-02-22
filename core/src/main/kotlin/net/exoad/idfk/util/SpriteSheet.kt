@@ -15,14 +15,13 @@ object SpriteSheet {
         return regions.getOrPut(Key(path, frameWidth, frameHeight)) {
             val tex = texture(path)
             val cols = tex.width / frameWidth
-            val padding = 0.5f
             Array(cols * (tex.height / frameHeight)) { i ->
                 TextureRegion(
                     tex,
-                    ((i % cols) * frameWidth + padding).toInt(),
-                    ((i / cols) * frameHeight + padding).toInt(),
-                    (frameWidth - 2 * padding).toInt(),
-                    (frameHeight - 2 * padding).toInt()
+                    (i % cols) * frameWidth,
+                    (i / cols) * frameHeight,
+                    frameWidth,
+                    frameHeight
                 )
             }
         }

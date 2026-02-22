@@ -6,6 +6,7 @@ import net.exoad.idfk.Str
 import net.exoad.idfk.Vec2
 import net.exoad.idfk.ecs.attach
 import net.exoad.idfk.ecs.component.*
+import net.exoad.idfk.util.SpriteRegistry
 
 object PlayerFactory {
     fun createPlayer(
@@ -16,13 +17,14 @@ object PlayerFactory {
     ): Entity {
         assert(id.isNotBlank())
         val playerSize = size ?: Vec2(16f, 16f)
+        val atlasPath = SpriteRegistry.getSheetPath("player") ?: "player.png"
         val player = Entity().attach {
             +IdComponent(id)
             +PositionComponent(position.x, position.y)
             +VelocityComponent(0f, 0f)
             +SizeComponent(playerSize.x, playerSize.y)
             +DirectionComponent()
-            +AtlasComponent("player.png", 16, 16)
+            +AtlasComponent(atlasPath, 16, 16)
             +AnimationComponent(intArrayOf(0), 0.15f, looping = true, isPlaying = false)
             +PlayerComponent()
         }
