@@ -29,26 +29,28 @@ class AnimationSystem :
                 else -> if (velocity.y > 0) Direction.NORTH else Direction.SOUTH
             }
         }
-        if (isMoving) {
-            if (!animation.isPlaying || animation.frames.contentEquals(intArrayOf(0))) {
-                animation.frames = intArrayOf(1, 0, 2)
-                animation.isPlaying = true
-                animation.currentFrame = 0
-                animation.elapsedTime = 0f
+        with(animation) {
+            if (isMoving) {
+                if (!isPlaying || frames.contentEquals(intArrayOf(0))) {
+                    frames = intArrayOf(1, 0, 2)
+                    isPlaying = true
+                    currentFrame = 0
+                    elapsedTime = 0f
+                }
+            } else {
+                if (isPlaying || !frames.contentEquals(intArrayOf(0))) {
+                    frames = intArrayOf(0)
+                    isPlaying = false
+                    currentFrame = 0
+                    elapsedTime = 0f
+                }
             }
-        } else {
-            if (animation.isPlaying || !animation.frames.contentEquals(intArrayOf(0))) {
-                animation.frames = intArrayOf(0)
-                animation.isPlaying = false
-                animation.currentFrame = 0
-                animation.elapsedTime = 0f
-            }
-        }
-        if (animation.isPlaying) {
-            animation.elapsedTime += deltaTime
-            if (animation.elapsedTime >= animation.frameDuration) {
-                animation.elapsedTime -= animation.frameDuration
-                animation.currentFrame = (animation.currentFrame + 1) % animation.frames.size
+            if (isPlaying) {
+                elapsedTime += deltaTime
+                if (elapsedTime >= frameDuration) {
+                    elapsedTime -= frameDuration
+                    currentFrame = (currentFrame + 1) % frames.size
+                }
             }
         }
     }

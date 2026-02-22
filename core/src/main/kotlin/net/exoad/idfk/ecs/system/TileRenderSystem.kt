@@ -23,8 +23,7 @@ class TileRenderSystem(
     private val batch: SpriteBatch,
     private val camera: OrthographicCamera,
     private val debugFont: BitmapFont? = null
-) :
-    IteratingSystem(allOf(TileMapComponent::class, PositionComponent::class).get()) {
+) : IteratingSystem(allOf(TileMapComponent::class, PositionComponent::class).get()) {
 
     private val tileMapMapper = mapperFor<TileMapComponent>()
     private val tileSetMapper = mapperFor<TileSetComponent>()

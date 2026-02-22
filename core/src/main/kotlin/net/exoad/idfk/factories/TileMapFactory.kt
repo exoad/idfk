@@ -52,13 +52,20 @@ object TileMapFactory {
         tilesetPath: String,
         tilesPerRow: Int
     ) {
-        val tileMapComponent = TileMapLoader.createTileMapFromString(
-            mapString,
-            tileSize,
-            mapOf()
+        createTileMap(
+            engine,
+            position,
+            TileMapLoader.createTileMapFromString(
+                mapString,
+                tileSize,
+                mapOf()
+            ),
+            TileSetComponent(
+                tilesetPath,
+                tileSize,
+                tilesPerRow
+            )
         )
-        val tileSetComponent = TileSetComponent(tilesetPath, tileSize, tilesPerRow)
-        createTileMap(engine, position, tileMapComponent, tileSetComponent)
     }
 }
 

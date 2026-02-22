@@ -12,13 +12,18 @@ data class TileMapComponent(
     )
 ) : Component {
     override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is TileMapComponent) return false
-        if (width != other.width) return false
-        if (height != other.height) return false
-        if (tileSize != other.tileSize) return false
-        if (!tiles.contentDeepEquals(other.tiles)) return false
-        if (tileTextureMap != other.tileTextureMap) return false
+        if (this === other) {
+            return true
+        }
+        if (other !is TileMapComponent
+            || width != other.width
+            || height != other.height
+            || tileSize != other.tileSize
+            || !tiles.contentDeepEquals(other.tiles)
+            || tileTextureMap != other.tileTextureMap
+        ) {
+            return false
+        }
         return true
     }
 

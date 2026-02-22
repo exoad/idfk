@@ -30,13 +30,13 @@ object WorldManager {
             8 9 10 11 8 9 10 11 8 9 10 11 8 9 10 11 8 9 10 11
             """.trimIndent(),
             tileSize = 16,
-            tileTextureMap = mapOf() // Empty since we're using tileset
+            tileTextureMap = mapOf()
         )
 
         val baseWorldTileset = TileSetComponent(
             tilesetPath = "tiles.png",
             tileSize = 16,
-            tilesPerRow = 4 // 64x64 image with 16x16 tiles = 4 tiles per row
+            tilesPerRow = 4
         )
 
         worlds["base"] = World(

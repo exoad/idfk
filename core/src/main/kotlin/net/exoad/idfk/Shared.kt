@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 
 object Shared {
-    const val VISUAL_SCALE = 3.5f
+    var VISUAL_SCALE = 3.5f
     const val DEBUG = true
 
     object Player {
@@ -12,6 +12,10 @@ object Shared {
         const val SPRINT_MULTIPLIER = 1.8f
     }
 
+    object World {
+        const val SPAWN_X = 0f
+        const val SPAWN_Y = 0f
+    }
 
     object Keybinds {
         const val MOVE_NORTH = Input.Keys.W

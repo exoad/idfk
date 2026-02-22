@@ -20,14 +20,16 @@ class Screen : KtxScreen {
     private val camera = OrthographicCamera()
 
     init {
-        camera.setToOrtho(
-            false,
-            Gdx.graphics.width.toFloat() / Shared.VISUAL_SCALE,
-            Gdx.graphics.height.toFloat() / Shared.VISUAL_SCALE
-        )
+        with(camera) {
+            setToOrtho(
+                false,
+                Gdx.graphics.width.toFloat() / Shared.VISUAL_SCALE,
+                Gdx.graphics.height.toFloat() / Shared.VISUAL_SCALE
+            )
+            update()
+        }
         camera.update()
-        val generator =
-            FreeTypeFontGenerator(Gdx.files.internal("Pizel.ttf"))
+        val generator = FreeTypeFontGenerator(Gdx.files.internal("Pizel.ttf"))
         val font = generator.generateFont(FreeTypeFontParameter().apply {
             size = 16
         })
@@ -36,6 +38,7 @@ class Screen : KtxScreen {
         })
         generator.dispose()
         with(engine) {
+            addSystem(CameraSystem(camera, batch))
             addSystem(TileRenderSystem(batch, camera, debugFont))
             addSystem(AnimationSystem())
             addSystem(PlayerInputSystem())
@@ -44,7 +47,6 @@ class Screen : KtxScreen {
                 RenderSystem(
                     batch,
                     font,
-                    camera
                 )
             )
         }
@@ -63,15 +65,23 @@ class Screen : KtxScreen {
     }
 
     override fun resize(width: Int, height: Int) {
-        camera.setToOrtho(false, width.toFloat() / Shared.VISUAL_SCALE, height.toFloat() / Shared.VISUAL_SCALE)
-        camera.update()
+        with(camera) {
+            setToOrtho(
+                false,
+                width.toFloat() / Shared.VISUAL_SCALE,
+                height.toFloat() / Shared.VISUAL_SCALE
+            )
+            update()
+        }
     }
 
     override fun render(delta: Float) {
         clearScreen(red = 0.098f, green = 0.1725f, blue = 0.3961f, alpha = 1f)
-        batch.begin()
-        engine.update(delta)
-        batch.end()
+        with(batch) {
+            begin()
+            engine.update(delta)
+            end()
+        }
     }
 
     override fun dispose() {

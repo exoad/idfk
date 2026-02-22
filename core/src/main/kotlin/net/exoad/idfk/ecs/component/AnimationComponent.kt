@@ -11,14 +11,19 @@ data class AnimationComponent(
     var elapsedTime: Float = 0f
 ) : Component {
     override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is AnimationComponent) return false
-        if (!frames.contentEquals(other.frames)) return false
-        if (frameDuration != other.frameDuration) return false
-        if (looping != other.looping) return false
-        if (isPlaying != other.isPlaying) return false
-        if (currentFrame != other.currentFrame) return false
-        if (elapsedTime != other.elapsedTime) return false
+        if (this === other) {
+            return true
+        }
+        if (other !is AnimationComponent
+            || !frames.contentEquals(other.frames)
+            || frameDuration != other.frameDuration
+            || looping != other.looping
+            || isPlaying != other.isPlaying
+            || currentFrame != other.currentFrame
+            || elapsedTime != other.elapsedTime
+        ) {
+            return false
+        }
         return true
     }
 

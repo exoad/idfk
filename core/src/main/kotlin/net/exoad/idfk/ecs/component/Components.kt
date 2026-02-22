@@ -5,11 +5,7 @@ import net.exoad.idfk.world.Direction
 
 class PlayerComponent : Component
 
-data class TileSetComponent(
-    val tilesetPath: String,
-    val tileSize: Int,
-    val tilesPerRow: Int
-) : Component
+data class TileSetComponent(val tilesetPath: String, val tileSize: Int, val tilesPerRow: Int) : Component
 
 data class AtlasComponent(
     val texturePath: String,
@@ -31,13 +27,5 @@ value class TextureComponent(val texturePath: String) : Component
 @JvmInline
 value class IdComponent(val id: String) : Component
 
-data class DirectionComponent(
-    var direction: Direction = Direction.SOUTH
-) : Component
-
-data class TileComponent(
-    val tileId: Int,
-    val gridX: Int,
-    val gridY: Int
-) : Component
+data class DirectionComponent(var direction: Direction = Direction.SOUTH) : Component
 

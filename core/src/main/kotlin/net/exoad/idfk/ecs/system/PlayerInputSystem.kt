@@ -12,12 +12,7 @@ import net.exoad.idfk.ecs.component.VelocityComponent
 import net.exoad.idfk.util.Logger
 import kotlin.math.sqrt
 
-class PlayerInputSystem : IteratingSystem(
-    allOf(
-        PlayerComponent::class,
-        VelocityComponent::class
-    ).get()
-) {
+class PlayerInputSystem : IteratingSystem(allOf(PlayerComponent::class, VelocityComponent::class).get()) {
     private val velocityMapper = mapperFor<VelocityComponent>()
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
