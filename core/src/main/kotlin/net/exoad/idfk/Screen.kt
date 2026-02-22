@@ -8,9 +8,11 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
+import net.exoad.idfk.ecs.attach
 import net.exoad.idfk.ecs.system.*
 import net.exoad.idfk.factories.PlayerFactory
 import net.exoad.idfk.factories.TileMapFactory
+import net.exoad.idfk.util.SpriteSheet
 import net.exoad.idfk.world.WorldManager
 
 class Screen : KtxScreen {
@@ -27,25 +29,20 @@ class Screen : KtxScreen {
             )
             update()
         }
-        camera.update()
         val generator = FreeTypeFontGenerator(Gdx.files.internal("Pizel.ttf"))
-        val font = generator.generateFont(FreeTypeFontParameter().apply {
-            size = 16
-        })
-        val debugFont = generator.generateFont(FreeTypeFontParameter().apply {
-            size = 8
-        })
+        val font = generator.generateFont(FreeTypeFontParameter().apply { size = 16 })
         generator.dispose()
-        with(engine) {
-            addSystem(CameraSystem(camera, batch))
-            addSystem(TileRenderSystem(batch, camera, debugFont))
-            addSystem(AnimationSystem())
-            addSystem(PlayerInputSystem())
-            addSystem(MovementSystem())
-            addSystem(RenderSystem(batch, font))
+        engine.attach {
+            +CameraSystem(camera, batch)
+            +TileRenderSystem(batch, camera)
+            +AnimationSystem()
+            +PlayerInputSystem()
+            +MovementSystem()
+            +RenderSystem(batch, font)
         }
-        val baseWorld = WorldManager.getBaseWorld()
-        TileMapFactory.createTileMap(engine, Vec2(0f, 0f), baseWorld.tileMapComponent)
+
+        val baseWorld = WorldManager["base"]
+        TileMapFactory.createFromWorld(engine, baseWorld, Vec2(0f, 0f))
         PlayerFactory.createPlayer(
             engine,
             Vec2(baseWorld.spawnX, baseWorld.spawnY),
@@ -72,11 +69,11 @@ class Screen : KtxScreen {
 
     override fun dispose() {
         engine.systems.forEach {
-            when (it) {
-                is RenderSystem -> it.dispose()
-                is TileRenderSystem -> it.disposeTextures()
+            if (it is DisposableSystem) {
+                it.dispose()
             }
         }
+        SpriteSheet.dispose()
         batch.dispose()
     }
 }

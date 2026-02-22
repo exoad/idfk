@@ -5,11 +5,10 @@ import com.badlogic.gdx.Input
 
 object Shared {
     var VISUAL_SCALE = 4.8f
-    const val DEBUG = true
 
     object Player {
         const val MAX_SPEED = 120f
-        const val SPRINT_MULTIPLIER = 1.8f
+        const val SPRINT_MULTIPLIER = 1.18f
     }
 
     object World {

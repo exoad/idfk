@@ -7,36 +7,27 @@ object WorldManager {
     private val worlds = mutableMapOf<String, World>()
 
     init {
-        registerBuiltInWorlds()
-    }
-
-    private fun registerBuiltInWorlds() {
         worlds["base"] = World(
-            "BaseWorld",
-            TileMapLoader.createTileMapFromString(
+            name = "BaseWorld",
+            tileMapComponent = TileMapLoader.createTileMapFromString(
                 WorldGenerator.generateWorldAsString(
-                    14,
-                    14,
-                    intArrayOf(1, 2, 3, 4, 5)
+                    width = 20,
+                    height = 20,
+                    textureIndices = intArrayOf(1, 2, 3, 4, 5)
                 ),
-                16,
-                mapOf()
+                tileSize = 16,
             ),
-            TileSetComponent("tiles.png", 16, 4),
-            160f,
-            120f
+            tileSetComponent = TileSetComponent("tiles.png", 16),
+            spawnX = 160f,
+            spawnY = 160f,
         )
     }
 
-    fun getWorld(name: String): World? {
-        return worlds[name]
+    operator fun get(name: String): World {
+        return worlds[name] ?: throw IllegalArgumentException("World '$name' not found.")
     }
 
-    fun getBaseWorld(): World {
-        return worlds["base"]!!
-    }
-
-    fun registerWorld(key: String, world: World) {
+    operator fun set(key: String, world: World) {
         worlds[key] = world
     }
 }

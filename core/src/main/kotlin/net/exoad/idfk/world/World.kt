@@ -7,10 +7,7 @@ import net.exoad.idfk.ecs.component.TileSetComponent
 data class World(
     val name: String,
     val tileMapComponent: TileMapComponent,
-    val tileSetComponent: TileSetComponent? = null,
+    val tileSetComponent: TileSetComponent,
     val spawnX: Float = Shared.World.SPAWN_X,
     val spawnY: Float = Shared.World.SPAWN_Y
 )
-
-
-
