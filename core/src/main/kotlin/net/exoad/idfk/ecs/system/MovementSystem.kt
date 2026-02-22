@@ -20,14 +20,10 @@ class MovementSystem : IteratingSystem(
     private val velocityMapper = mapperFor<VelocityComponent>()
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
-        val position = entity[positionMapper]!!
         val velocity = entity[velocityMapper]!!
-        with(position) {
+        with(entity[positionMapper]!!) {
             x += velocity.x * deltaTime
             y += velocity.y * deltaTime
-            // apply snapping to grid for the pixels
-//            x = round(x)
-//            y = round(y)
         }
     }
 }

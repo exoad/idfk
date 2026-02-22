@@ -11,9 +11,13 @@ import net.exoad.idfk.ecs.component.VelocityComponent
 import net.exoad.idfk.world.Direction
 import kotlin.math.absoluteValue
 
-class AnimationSystem :
-    IteratingSystem(allOf(AnimationComponent::class, VelocityComponent::class, DirectionComponent::class).get()) {
-
+class AnimationSystem : IteratingSystem(
+    allOf(
+        AnimationComponent::class,
+        VelocityComponent::class,
+        DirectionComponent::class
+    ).get()
+) {
     private val animationMapper = mapperFor<AnimationComponent>()
     private val velocityMapper = mapperFor<VelocityComponent>()
     private val directionMapper = mapperFor<DirectionComponent>()

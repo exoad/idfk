@@ -2,7 +2,8 @@ package net.exoad.idfk.factories
 
 import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
-import com.badlogic.gdx.math.Vector2
+import net.exoad.idfk.Str
+import net.exoad.idfk.Vec2
 import net.exoad.idfk.ecs.component.PositionComponent
 import net.exoad.idfk.ecs.component.TileMapComponent
 import net.exoad.idfk.ecs.component.TileSetComponent
@@ -11,7 +12,7 @@ import net.exoad.idfk.util.TileMapLoader
 object TileMapFactory {
     fun createTileMap(
         engine: Engine,
-        position: Vector2,
+        position: Vec2,
         tileMapComponent: TileMapComponent,
         tileSetComponent: TileSetComponent? = null
     ) {
@@ -28,10 +29,10 @@ object TileMapFactory {
 
     fun createTileMapFromString(
         engine: Engine,
-        position: Vector2,
-        mapString: String,
+        position: Vec2,
+        mapString: Str,
         tileSize: Int,
-        tileTextureMap: Map<Int, String> = mapOf(0 to "null.png")
+        tileTextureMap: Map<Int, Str> = mapOf(0 to "null.png")
     ) {
         createTileMap(
             engine,
@@ -46,10 +47,10 @@ object TileMapFactory {
 
     fun createTileMapWithTileSet(
         engine: Engine,
-        position: Vector2,
-        mapString: String,
+        position: Vec2,
+        mapString: Str,
         tileSize: Int,
-        tilesetPath: String,
+        tilesetPath: Str,
         tilesPerRow: Int
     ) {
         createTileMap(

@@ -1,19 +1,21 @@
 package net.exoad.idfk.util
 
+import net.exoad.idfk.Str
+
 object Logger {
-    fun info(message: String) {
+    fun info(message: Str) {
         println("[INFO] $message")
     }
 
-    fun error(message: String) {
+    fun error(message: Str) {
         println("[ERROR] $message")
     }
 
-    fun debug(message: String) {
+    fun debug(message: Str) {
         println("[DEBUG] $message")
     }
 
-    fun warn(message: String) {
+    fun warn(message: Str) {
         println("[WARN] $message")
     }
 }

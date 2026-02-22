@@ -13,6 +13,7 @@ import ktx.ashley.get
 import ktx.ashley.mapperFor
 import ktx.assets.toInternalFile
 import net.exoad.idfk.Shared
+import net.exoad.idfk.Str
 import net.exoad.idfk.ecs.component.PositionComponent
 import net.exoad.idfk.ecs.component.TileMapComponent
 import net.exoad.idfk.ecs.component.TileSetComponent
@@ -28,8 +29,8 @@ class TileRenderSystem(
     private val tileMapMapper = mapperFor<TileMapComponent>()
     private val tileSetMapper = mapperFor<TileSetComponent>()
     private val positionMapper = mapperFor<PositionComponent>()
-    private val textureCache = mutableMapOf<String, Texture>()
-    private val tileSetRegionCache = mutableMapOf<String, Array<TextureRegion>>()
+    private val textureCache = mutableMapOf<Str, Texture>()
+    private val tileSetRegionCache = mutableMapOf<Str, Array<TextureRegion>>()
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val tileMap = entity[tileMapMapper]!!
@@ -61,12 +62,7 @@ class TileRenderSystem(
                 if (Shared.DEBUG) {
                     if (debugFont != null) {
                         debugFont.color = Color.WHITE
-                        debugFont.draw(
-                            batch,
-                            tileId.toString(),
-                            worldX + 2f,
-                            worldY + worldTileSize - 2f
-                        )
+                        debugFont.draw(batch, tileId.toString(), worldX + 2f, worldY + worldTileSize - 2f)
                     }
                 }
             }
@@ -132,7 +128,9 @@ class TileRenderSystem(
 
     fun disposeTextures() {
         with(textureCache) {
-            values.forEach { it.dispose() }
+            values.forEach {
+                it.dispose()
+            }
             clear()
         }
         tileSetRegionCache.clear()

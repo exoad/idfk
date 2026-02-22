@@ -1,11 +1,13 @@
 package net.exoad.idfk.factories
 
+import net.exoad.idfk.Bool
+import net.exoad.idfk.Str
 import net.exoad.idfk.ecs.component.AnimationComponent
 import net.exoad.idfk.ecs.component.AtlasComponent
 
 object AtlasFactory {
     fun createStaticAtlas(
-        texturePath: String,
+        texturePath: Str,
         frameWidth: Int,
         frameHeight: Int,
         framesPerRow: Int,
@@ -21,7 +23,7 @@ object AtlasFactory {
     }
 
     fun createAnimatedAtlas(
-        texturePath: String,
+        texturePath: Str,
         frameWidth: Int,
         frameHeight: Int,
         framesPerRow: Int
@@ -50,8 +52,8 @@ object AtlasFactory {
     fun createAnimation(
         frames: IntArray,
         frameDuration: Float = 0.15f,
-        looping: Boolean = true,
-        isPlaying: Boolean = false
+        looping: Bool = true,
+        isPlaying: Bool = false
     ): AnimationComponent {
         return AnimationComponent(
             frames = frames,

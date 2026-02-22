@@ -2,22 +2,23 @@ package net.exoad.idfk.factories
 
 import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
-import com.badlogic.gdx.math.Vector2
+import net.exoad.idfk.Str
+import net.exoad.idfk.Vec2
 import net.exoad.idfk.ecs.component.*
 
 object AtlasEntityFactory {
 
     fun createAnimatedEntity(
         engine: Engine,
-        position: Vector2,
-        texturePath: String,
+        position: Vec2,
+        texturePath: Str,
         frameWidth: Int,
         frameHeight: Int,
         framesPerRow: Int,
-        size: Vector2? = null,
-        id: String = "animated-${System.nanoTime()}"
+        size: Vec2? = null,
+        id: Str = "animated-${System.nanoTime()}"
     ): Entity {
-        val entitySize = size ?: Vector2(frameWidth.toFloat(), frameHeight.toFloat())
+        val entitySize = size ?: Vec2(frameWidth.toFloat(), frameHeight.toFloat())
         val entity = Entity().apply {
             add(IdComponent(id))
             add(PositionComponent(position.x, position.y))
@@ -33,14 +34,14 @@ object AtlasEntityFactory {
 
     fun createStaticSpriteEntity(
         engine: Engine,
-        position: Vector2,
-        size: Vector2,
-        texturePath: String,
+        position: Vec2,
+        size: Vec2,
+        texturePath: Str,
         frameWidth: Int,
         frameHeight: Int,
         framesPerRow: Int,
         frameIndex: Int,
-        id: String = "sprite-${System.nanoTime()}"
+        id: Str = "sprite-${System.nanoTime()}"
     ): Entity {
         val entity = Entity().apply {
             add(IdComponent(id))
@@ -54,14 +55,14 @@ object AtlasEntityFactory {
 
     fun createUIAtlasElement(
         engine: Engine,
-        position: Vector2,
-        size: Vector2,
-        texturePath: String,
+        position: Vec2,
+        size: Vec2,
+        texturePath: Str,
         frameWidth: Int,
         frameHeight: Int,
         framesPerRow: Int,
         frameIndex: Int,
-        id: String = "ui-${System.nanoTime()}"
+        id: Str = "ui-${System.nanoTime()}"
     ): Entity {
         val entity = Entity().apply {
             add(IdComponent(id))

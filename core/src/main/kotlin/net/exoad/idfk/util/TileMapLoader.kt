@@ -1,5 +1,6 @@
 package net.exoad.idfk.util
 
+import net.exoad.idfk.Str
 import net.exoad.idfk.ecs.component.TileMapComponent
 
 object TileMapLoader {
@@ -8,7 +9,7 @@ object TileMapLoader {
         height: Int,
         tileSize: Int,
         tiles: Array<IntArray>,
-        tileTextureMap: Map<Int, String> = mapOf(0 to "null.png")
+        tileTextureMap: Map<Int, Str> = mapOf(0 to "null.png")
     ): TileMapComponent {
         require(tiles.size == height) {
             "Tiles array height must match height parameter"
@@ -20,9 +21,9 @@ object TileMapLoader {
     }
 
     fun createTileMapFromString(
-        mapString: String,
+        mapString: Str,
         tileSize: Int,
-        tileTextureMap: Map<Int, String> = mapOf(0 to "null.png"),
+        tileTextureMap: Map<Int, Str> = mapOf(0 to "null.png"),
         separator: Regex = Regex("[\\s,]+")
     ): TileMapComponent {
         val lines = mapString.trim().split("\n").filter {

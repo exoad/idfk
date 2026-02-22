@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter
-import com.badlogic.gdx.math.Vector2
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
 import net.exoad.idfk.ecs.system.*
@@ -43,40 +42,27 @@ class Screen : KtxScreen {
             addSystem(AnimationSystem())
             addSystem(PlayerInputSystem())
             addSystem(MovementSystem())
-            addSystem(
-                RenderSystem(
-                    batch,
-                    font,
-                )
-            )
+            addSystem(RenderSystem(batch, font))
         }
         val baseWorld = WorldManager.getBaseWorld()
-        TileMapFactory.createTileMap(
-            engine,
-            Vector2(0f, 0f),
-            baseWorld.tileMapComponent
-        )
+        TileMapFactory.createTileMap(engine, Vec2(0f, 0f), baseWorld.tileMapComponent)
         PlayerFactory.createPlayer(
             engine,
-            Vector2(baseWorld.spawnX, baseWorld.spawnY),
-            Vector2(16f, 16f),
+            Vec2(baseWorld.spawnX, baseWorld.spawnY),
+            Vec2(16f, 16f),
             "player",
         )
     }
 
     override fun resize(width: Int, height: Int) {
         with(camera) {
-            setToOrtho(
-                false,
-                width.toFloat() / Shared.VISUAL_SCALE,
-                height.toFloat() / Shared.VISUAL_SCALE
-            )
+            setToOrtho(false, width.toFloat() / Shared.VISUAL_SCALE, height.toFloat() / Shared.VISUAL_SCALE)
             update()
         }
     }
 
     override fun render(delta: Float) {
-        clearScreen(red = 0.098f, green = 0.1725f, blue = 0.3961f, alpha = 1f)
+        clearScreen(0.098f, 0.1725f, 0.3961f)
         with(batch) {
             begin()
             engine.update(delta)

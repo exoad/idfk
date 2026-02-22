@@ -9,7 +9,6 @@ import net.exoad.idfk.Shared
 import net.exoad.idfk.Shared.Keybinds.isPressed
 import net.exoad.idfk.ecs.component.PlayerComponent
 import net.exoad.idfk.ecs.component.VelocityComponent
-import net.exoad.idfk.util.Logger
 import kotlin.math.sqrt
 
 class PlayerInputSystem : IteratingSystem(allOf(PlayerComponent::class, VelocityComponent::class).get()) {

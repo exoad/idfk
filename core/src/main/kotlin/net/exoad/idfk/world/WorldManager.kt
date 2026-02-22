@@ -11,40 +11,20 @@ object WorldManager {
     }
 
     private fun registerBuiltInWorlds() {
-        val baseWorldTilemap = TileMapLoader.createTileMapFromString(
-            """
-            0 1 2 3 0 1 2 3 0 1 2 3 0 1 2 3 0 1 2 3
-            4 5 6 7 4 5 6 7 4 5 6 7 4 5 6 7 4 5 6 7
-            8 9 10 11 8 9 10 11 8 9 10 11 8 9 10 11 8 9 10 11
-            12 13 14 15 12 13 14 15 12 13 14 15 12 13 14 15 12 13 14 15
-            0 1 2 3 0 1 2 3 0 1 2 3 0 1 2 3 0 1 2 3
-            4 5 6 7 4 5 6 7 4 5 6 7 4 5 6 7 4 5 6 7
-            8 9 10 11 8 9 10 11 8 9 10 11 8 9 10 11 8 9 10 11
-            12 13 14 15 12 13 14 15 12 13 14 15 12 13 14 15 12 13 14 15
-            0 1 2 3 0 1 2 3 0 1 2 3 0 1 2 3 0 1 2 3
-            4 5 6 7 4 5 6 7 4 5 6 7 4 5 6 7 4 5 6 7
-            8 9 10 11 8 9 10 11 8 9 10 11 8 9 10 11 8 9 10 11
-            12 13 14 15 12 13 14 15 12 13 14 15 12 13 14 15 12 13 14 15
-            0 1 2 3 0 1 2 3 0 1 2 3 0 1 2 3 0 1 2 3
-            4 5 6 7 4 5 6 7 4 5 6 7 4 5 6 7 4 5 6 7
-            8 9 10 11 8 9 10 11 8 9 10 11 8 9 10 11 8 9 10 11
-            """.trimIndent(),
-            tileSize = 16,
-            tileTextureMap = mapOf()
-        )
-
-        val baseWorldTileset = TileSetComponent(
-            tilesetPath = "tiles.png",
-            tileSize = 16,
-            tilesPerRow = 4
-        )
-
         worlds["base"] = World(
-            name = "BaseWorld",
-            tileMapComponent = baseWorldTilemap,
-            tileSetComponent = baseWorldTileset,
-            spawnX = 160f,
-            spawnY = 120f
+            "BaseWorld",
+            TileMapLoader.createTileMapFromString(
+                WorldGenerator.generateWorldAsString(
+                    14,
+                    14,
+                    intArrayOf(1, 2, 3, 4, 5)
+                ),
+                16,
+                mapOf()
+            ),
+            TileSetComponent("tiles.png", 16, 4),
+            160f,
+            120f
         )
     }
 

@@ -11,8 +11,10 @@ import ktx.ashley.allOf
 import ktx.ashley.get
 import ktx.ashley.mapperFor
 import ktx.assets.toInternalFile
+import net.exoad.idfk.Str
 import net.exoad.idfk.ecs.component.*
 import net.exoad.idfk.world.Direction
+import net.exoad.idfk.world.Direction.Companion.mapToTextureIndex
 
 class RenderSystem(
     private val batch: SpriteBatch,
@@ -24,8 +26,8 @@ class RenderSystem(
     private val sizeMapper = mapperFor<SizeComponent>()
     private val atlasMapper = mapperFor<AtlasComponent>()
     private val animationMapper = mapperFor<AnimationComponent>()
-    private val textureCache = mutableMapOf<String, Texture>()
-    private val textureRegionCache = mutableMapOf<String, Array<TextureRegion>>()
+    private val textureCache = mutableMapOf<Str, Texture>()
+    private val textureRegionCache = mutableMapOf<Str, Array<TextureRegion>>()
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val position = entity[positionMapper]!!
@@ -62,7 +64,9 @@ class RenderSystem(
                     color = Color.WHITE
                     draw(
                         textureCache.getOrPut(textureComp.texturePath) {
-                            Texture(textureComp.texturePath.toInternalFile())
+                            Texture(textureComp.texturePath.toInternalFile()).apply {
+                                setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest)
+                            }
                         },
                         worldX,
                         worldY,
@@ -78,7 +82,9 @@ class RenderSystem(
     private fun fetchRegions(atlas: AtlasComponent): Array<TextureRegion> {
         return textureRegionCache.getOrPut(atlas.texturePath) {
             val texture = textureCache.getOrPut(atlas.texturePath) {
-                Texture(atlas.texturePath.toInternalFile())
+                Texture(atlas.texturePath.toInternalFile()).apply {
+                    setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest)
+                }
             }
             val regions = mutableListOf<TextureRegion>()
             val framesPerRow = atlas.framesPerRow
@@ -110,12 +116,8 @@ class RenderSystem(
         size: SizeComponent
     ) {
         val regions = fetchRegions(atlas)
-        val frameIndex = (when (entity[mapperFor<DirectionComponent>()]?.direction ?: Direction.SOUTH) {
-                              Direction.SOUTH -> 0
-                              Direction.WEST -> 1
-                              Direction.EAST -> 2
-                              Direction.NORTH -> 3
-                          } * atlas.framesPerRow) + animation.frames[animation.currentFrame]
+        val frameIndex = ((entity[mapperFor<DirectionComponent>()]?.direction ?: Direction.SOUTH).mapToTextureIndex()
+                          * atlas.framesPerRow) + animation.frames[animation.currentFrame]
         if (frameIndex >= 0 && frameIndex < regions.size) {
             with(batch) {
                 color = Color.WHITE

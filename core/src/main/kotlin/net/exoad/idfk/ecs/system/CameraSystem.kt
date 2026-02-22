@@ -15,8 +15,13 @@ class CameraSystem(private val camera: OrthographicCamera, private val batch: Sp
     private val sizeMapper = mapperFor<SizeComponent>()
 
     override fun update(deltaTime: Float) {
-        val players =
-            engine.getEntitiesFor(allOf(PlayerComponent::class, PositionComponent::class, SizeComponent::class).get())
+        val players = engine.getEntitiesFor(
+            allOf(
+                PlayerComponent::class,
+                PositionComponent::class,
+                SizeComponent::class
+            ).get()
+        )
         if (players.size() > 0) {
             val p = players.first()
             val pos = p[positionMapper]!!

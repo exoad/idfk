@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 
 object Shared {
-    var VISUAL_SCALE = 4.5f
+    var VISUAL_SCALE = 4.8f
     const val DEBUG = true
 
     object Player {
@@ -24,7 +24,7 @@ object Shared {
         const val MOVE_WEST = Input.Keys.A
         const val SPRINT = Input.Keys.SHIFT_LEFT
 
-        fun Int.isPressed(): Boolean {
+        fun Int.isPressed(): Bool {
             return Gdx.input.isKeyPressed(this)
         }
     }
