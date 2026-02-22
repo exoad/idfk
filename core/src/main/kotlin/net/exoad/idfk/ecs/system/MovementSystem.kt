@@ -8,8 +8,6 @@ import ktx.ashley.mapperFor
 import net.exoad.idfk.ecs.component.PlayerComponent
 import net.exoad.idfk.ecs.component.PositionComponent
 import net.exoad.idfk.ecs.component.VelocityComponent
-import net.exoad.idfk.util.Logger
-import kotlin.math.round
 
 class MovementSystem : IteratingSystem(
     allOf(
@@ -24,11 +22,12 @@ class MovementSystem : IteratingSystem(
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val position = entity[positionMapper]!!
         val velocity = entity[velocityMapper]!!
-        position.x += velocity.x * deltaTime
-        position.y += velocity.y * deltaTime
-        // apply snapping to grid for the pixels
-        position.x = round(position.x)
-        position.y = round(position.y)
-        Logger.info("Entity $entity moved to (${position.x}, ${position.y})")
+        with(position) {
+            x += velocity.x * deltaTime
+            y += velocity.y * deltaTime
+            // apply snapping to grid for the pixels
+//            x = round(x)
+//            y = round(y)
+        }
     }
 }

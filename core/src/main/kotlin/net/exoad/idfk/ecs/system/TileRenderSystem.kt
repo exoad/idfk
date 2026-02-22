@@ -39,24 +39,20 @@ class TileRenderSystem(
         val camRight = camera.position.x + camera.viewportWidth / 2f
         val camBottom = camera.position.y - camera.viewportHeight / 2f
         val camTop = camera.position.y + camera.viewportHeight / 2f
-        val camLeftPx = camLeft * Shared.VISUAL_SCALE
-        val camRightPx = camRight * Shared.VISUAL_SCALE
-        val camBottomPx = camBottom * Shared.VISUAL_SCALE
-        val camTopPx = camTop * Shared.VISUAL_SCALE
         val tileSizePx = tileMap.tileSize.toFloat()
         val marginTiles = 1
-        val minX = (floor((camLeftPx - mapPosition.x) / tileSizePx).toInt() - marginTiles).coerceAtLeast(0)
+        val minX = (floor((camLeft - mapPosition.x) / tileSizePx).toInt() - marginTiles).coerceAtLeast(0)
         val maxX =
-            (ceil((camRightPx - mapPosition.x) / tileSizePx).toInt() + marginTiles).coerceAtMost(tileMap.width - 1)
-        val minY = (floor((camBottomPx - mapPosition.y) / tileSizePx).toInt() - marginTiles).coerceAtLeast(0)
+            (ceil((camRight - mapPosition.x) / tileSizePx).toInt() + marginTiles).coerceAtMost(tileMap.width - 1)
+        val minY = (floor((camBottom - mapPosition.y) / tileSizePx).toInt() - marginTiles).coerceAtLeast(0)
         val maxY =
-            (ceil((camTopPx - mapPosition.y) / tileSizePx).toInt() + marginTiles).coerceAtMost(tileMap.height - 1)
+            (ceil((camTop - mapPosition.y) / tileSizePx).toInt() + marginTiles).coerceAtMost(tileMap.height - 1)
         for (y in minY..maxY) {
             for (x in minX..maxX) {
                 val tileId = tileMap.tiles[y][x]
-                val worldX = (mapPosition.x + (x * tileMap.tileSize)) / Shared.VISUAL_SCALE
-                val worldY = (mapPosition.y + (y * tileMap.tileSize)) / Shared.VISUAL_SCALE
-                val worldTileSize = tileMap.tileSize.toFloat() / Shared.VISUAL_SCALE
+                val worldX = mapPosition.x + (x * tileMap.tileSize)
+                val worldY = mapPosition.y + (y * tileMap.tileSize)
+                val worldTileSize = tileMap.tileSize.toFloat()
                 if (tileSet != null) {
                     renderTileFromTileSet(batch, tileSet, tileId, worldX, worldY, worldTileSize)
                 } else {
@@ -66,8 +62,10 @@ class TileRenderSystem(
                     if (debugFont != null) {
                         debugFont.color = Color.WHITE
                         debugFont.draw(
-                            batch, tileId.toString(), worldX + 2f / Shared.VISUAL_SCALE, worldY + worldTileSize - 2f /
-                                                                                         Shared.VISUAL_SCALE
+                            batch,
+                            tileId.toString(),
+                            worldX + 2f,
+                            worldY + worldTileSize - 2f
                         )
                     }
                 }

@@ -42,6 +42,5 @@ class PlayerInputSystem : IteratingSystem(allOf(PlayerComponent::class, Velocity
         val speed = Shared.Player.MAX_SPEED * if (goSprint) Shared.Player.SPRINT_MULTIPLIER else 1f
         velocity.x = dx * speed
         velocity.y = dy * speed
-        Logger.info("Player velocity: (${velocity.x}, ${velocity.y})")
     }
 }

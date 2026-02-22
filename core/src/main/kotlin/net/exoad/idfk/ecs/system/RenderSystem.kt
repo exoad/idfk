@@ -11,7 +11,6 @@ import ktx.ashley.allOf
 import ktx.ashley.get
 import ktx.ashley.mapperFor
 import ktx.assets.toInternalFile
-import net.exoad.idfk.Shared
 import net.exoad.idfk.ecs.component.*
 import net.exoad.idfk.world.Direction
 
@@ -34,9 +33,8 @@ class RenderSystem(
         val sizeComp = entity[sizeMapper]
         val atlasComp = entity[atlasMapper]
         val animationComp = entity[animationMapper]
-        val scale = Shared.VISUAL_SCALE
-        val worldX = position.x / scale
-        val worldY = position.y / scale
+        val worldX = position.x
+        val worldY = position.y
         when {
             atlasComp != null && sizeComp != null -> {
                 if (animationComp != null) {
@@ -46,7 +44,7 @@ class RenderSystem(
                         atlasComp,
                         animationComp,
                         PositionComponent(worldX, worldY),
-                        SizeComponent(sizeComp.width / scale, sizeComp.height / scale)
+                        SizeComponent(sizeComp.width, sizeComp.height)
                     )
                 } else if (atlasComp.frameIndex != null) {
                     renderStaticAtlas(
@@ -54,7 +52,7 @@ class RenderSystem(
                         atlasComp,
                         atlasComp.frameIndex,
                         PositionComponent(worldX, worldY),
-                        SizeComponent(sizeComp.width / scale, sizeComp.height / scale)
+                        SizeComponent(sizeComp.width, sizeComp.height)
                     )
                 }
             }
@@ -68,8 +66,8 @@ class RenderSystem(
                         },
                         worldX,
                         worldY,
-                        sizeComp.width / scale,
-                        sizeComp.height / scale
+                        sizeComp.width,
+                        sizeComp.height
                     )
                     color = Color.WHITE
                 }

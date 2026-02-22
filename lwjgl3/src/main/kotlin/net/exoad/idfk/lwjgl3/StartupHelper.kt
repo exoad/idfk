@@ -47,48 +47,49 @@ object StartupHelper {
 	 */
 	fun isLinuxNvidia(): Boolean = File("/proc/driver").list { _, path: String -> "NVIDIA" in path.uppercase() }.isNullOrEmpty().not()
 
-	/**
-	 * Applies the utilities as described by [StartupHelper]'s KDoc.
-	 *
-	 * All [Environment Variables][System.getenv] are copied to the child JVM process (if it is spawned), as specified by [ProcessBuilder.environment]; the same applies for [System Properties][System.getProperties].
-	 *
-	 * **Usage:**
-	 *
-	 * ```
-	 * fun main() {
-	 *   if (StartupHelper.startNewJvmIfRequired()) return
-	 *   // ...
-	 * }
-	 * ```
-	 * @param inheritIO whether I/O should be inherited in the child JVM process. Please note that enabling this will block the thread until the child JVM process stops executing.
-	 * @return whether a child JVM process was spawned or not.
-	 */
-	@JvmOverloads
-	fun startNewJvmIfRequired(inheritIO: Boolean = true): Boolean {
-		val osName: String = System.getProperty("os.name").lowercase()
-		if ("mac" in osName) return startNewJvm0(isMac = true, inheritIO)
-		if ("windows" in osName) {
-			// Here, we are trying to work around an issue with how LWJGL3 loads its extracted .dll files.
-			// By default, LWJGL3 extracts to the directory specified by "java.io.tmpdir": usually, the user's home.
-			// If the user's name has non-ASCII (or some non-alphanumeric) characters in it, that would fail.
-			// By extracting to the relevant "ProgramData" folder, which is usually "C:\ProgramData", we avoid this.
-			// We also temporarily change the "user.name" property to one without any chars that would be invalid.
-			// We revert our changes immediately after loading LWJGL3 natives.
-			val programData: String = System.getenv("ProgramData") ?: "C:\\Temp"
-			val prevTmpDir: String = System.getProperty("java.io.tmpdir", programData)
-			val prevUser: String = System.getProperty("user.name", "libGDX_User")
-			System.setProperty("java.io.tmpdir", "$programData\\libGDX-temp")
-			System.setProperty(
-				"user.name",
-				"User_${prevUser.hashCode()}_GDX${Version.VERSION}".replace('.', '_')
-			)
-			Lwjgl3NativesLoader.load()
-			System.setProperty("java.io.tmpdir", prevTmpDir)
-			System.setProperty("user.name", prevUser)
-			return false
-		}
-		return startNewJvm0(isMac = false, inheritIO)
-	}
+    /**
+     * Applies the utilities as described by [StartupHelper]'s KDoc.
+     *
+     * All [Environment Variables][System.getenv] are copied to the child JVM process (if it is spawned), as specified by [ProcessBuilder.environment]; the same applies for [System Properties][System.getProperties].
+     *
+     * **Usage:**
+     *
+     * ```
+     * fun main() {
+     *   if (StartupHelper.startNewJvmIfRequired()) return
+     *   // ...
+     * }
+     * ```
+     * @param inheritIO whether I/O should be inherited in the child JVM process. Please note that enabling this will block the thread until the child JVM process stops executing.
+     * @return whether a child JVM process was spawned or not.
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun startNewJvmIfRequired(inheritIO: Boolean = true): Boolean {
+        val osName: String = System.getProperty("os.name").lowercase()
+        if ("mac" in osName) return startNewJvm0(isMac = true, inheritIO)
+        if ("windows" in osName) {
+            // Here, we are trying to work around an issue with how LWJGL3 loads its extracted .dll files.
+            // By default, LWJGL3 extracts to the directory specified by "java.io.tmpdir": usually, the user's home.
+            // If the user's name has non-ASCII (or some non-alphanumeric) characters in it, that would fail.
+            // By extracting to the relevant "ProgramData" folder, which is usually "C:\ProgramData", we avoid this.
+            // We also temporarily change the "user.name" property to one without any chars that would be invalid.
+            // We revert our changes immediately after loading LWJGL3 natives.
+            val programData: String = System.getenv("ProgramData") ?: "C:\\Temp"
+            val prevTmpDir: String = System.getProperty("java.io.tmpdir", programData)
+            val prevUser: String = System.getProperty("user.name", "libGDX_User")
+            System.setProperty("java.io.tmpdir", "$programData\\libGDX-temp")
+            System.setProperty(
+                "user.name",
+                "User_${prevUser.hashCode()}_GDX${Version.VERSION}".replace('.', '_')
+            )
+            Lwjgl3NativesLoader.load()
+            System.setProperty("java.io.tmpdir", prevTmpDir)
+            System.setProperty("user.name", prevUser)
+            return false
+        }
+        return startNewJvm0(isMac = false, inheritIO)
+    }
 
 	private const val MAC_JRE_ERR_MSG: String = "A Java installation could not be found. If you are distributing this app with a bundled JRE, be sure to set the '-XstartOnFirstThread' argument manually!"
 	private const val LINUX_JRE_ERR_MSG: String = "A Java installation could not be found. If you are distributing this app with a bundled JRE, be sure to set the environment variable '__GL_THREADED_OPTIMIZATIONS' to '0'!"
