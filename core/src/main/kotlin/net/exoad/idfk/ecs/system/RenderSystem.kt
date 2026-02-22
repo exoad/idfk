@@ -54,7 +54,13 @@ class RenderSystem(
             textureComp != null -> {
                 with(batch) {
                     color = Color.WHITE
-                    draw(SpriteSheet.texture(textureComp.texturePath), position.x, position.y, sizeComp.width, sizeComp.height)
+                    draw(
+                        SpriteSheet.texture(textureComp.texturePath),
+                        position.x,
+                        position.y,
+                        sizeComp.width,
+                        sizeComp.height
+                    )
                 }
             }
         }

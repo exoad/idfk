@@ -1,43 +1,54 @@
 package net.exoad.idfk.world
 
 import net.exoad.idfk.ecs.component.TileSetComponent
-import net.exoad.idfk.util.GameObject
 import net.exoad.idfk.util.SpriteRegistry
-import net.exoad.idfk.util.TileGrid
-import net.exoad.idfk.util.TileMapLoader
+import net.exoad.idfk.util.SpriteRegistry.getSheetPathByKey
+import net.exoad.idfk.util.WorldObjectRegistry
 
 object WorldManager {
     private val worlds = mutableMapOf<String, World>()
 
     init {
         with(SpriteRegistry) {
-            defineSheet("items", "items.png", 16, 16)
-            defineSpriteByGrid("tree", "items", 0, 0)
-            defineSheet("tiles", "tiles.png", 16, 16)
-            defineSheet("player", "player.png", 16, 16)
-            val width = 20
-            val height = 20
-            val tileMap = TileMapLoader.createTileMapFromString(
-                WorldGenerator.generateWorldAsString(
-                    width = width,
-                    height = height,
-                    textureIndices = intArrayOf(1, 2, 3, 4, 5)
-                ),
-                tileSize = 16,
-            )
-
-            val grid = TileGrid(width, height)
-            val tree = GameObject(id = 1, type = "tree")
-            grid.placeObject(10, 10, tree)
-            worlds["base"] = World(
-                name = "BaseWorld",
-                tileMapComponent = tileMap,
-                tileSetComponent = TileSetComponent(getSheetPathByKey("tiles") ?: "tiles.png", 16),
-                objectGrid = grid,
-                spawnX = 160f,
-                spawnY = 160f,
+            sheet("items", "items.png", 16, 16) {
+                sprite("tree", 0, 0) {
+                    offsetX = 1f
+                    offsetY = 1f
+                    width = 14f
+                    height = 15f
+                }
+            }
+            sheet("tiles", "tiles.png", 16, 16) { }
+            sheet("player", "player.png", 16, 16) {
+                sprite("player", 0, 0) {
+                    offsetX = 4f
+                    offsetY = 1f
+                    width = 8f
+                    height = 14f
+                }
+            }
+        }
+        with(WorldObjectRegistry) {
+            registerConverted(
+                "tree",
+                "tree",
+                spriteHeight = 16f,
+                offsetX = 0f,
+                offsetY = 0f,
+                width = 16f,
+                height = 16f,
+                blocking = true
             )
         }
+        worlds["base"] = WorldGenerator.generateWorld(
+            width = 32,
+            height = 32,
+            textureIndices = intArrayOf(1, 2, 3, 4, 5),
+            spawnX = 0f,
+            spawnY = 0f,
+            tileSetComponent = TileSetComponent(getSheetPathByKey("tiles"), 16),
+            name = "base"
+        )
     }
 
     operator fun get(name: String): World {

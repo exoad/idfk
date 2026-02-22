@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL30
 import ktx.app.KtxGame
 import ktx.app.KtxScreen
 import ktx.async.KtxAsync
-import net.exoad.idfk.world.WorldManager
 import org.tinylog.kotlin.Logger
 
 class GameMain : KtxGame<KtxScreen>() {
@@ -23,7 +22,7 @@ class GameMain : KtxGame<KtxScreen>() {
                     Gdx.gl.glEnable(GL20.GL_BLEND)
                     Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
                 }
-            } catch (e: Throwable) {
+            } catch (_: Throwable) {
             }
             try {
                 Gdx.gl.glClearColor(0f, 0f, 0f, 0f)
@@ -35,19 +34,6 @@ class GameMain : KtxGame<KtxScreen>() {
             }
         } catch (_: Throwable) {
         }
-        Logger.info(
-            "WORLD:\n${
-                buildString {
-                    val world = WorldManager["base"]
-                    for (y in 0 until world.tileMapComponent.height) {
-                        for (x in 0 until world.tileMapComponent.width) {
-                            append(world.tileMapComponent.tiles[y][x]).append(" ")
-                        }
-                        appendLine()
-                    }
-                }
-            }"
-        )
         KtxAsync.initiate()
         addScreen(Screen())
         setScreen<Screen>()

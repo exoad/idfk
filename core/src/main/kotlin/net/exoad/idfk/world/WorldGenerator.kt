@@ -1,6 +1,10 @@
 package net.exoad.idfk.world
 
 import net.exoad.idfk.Str
+import net.exoad.idfk.ecs.component.TileSetComponent
+import net.exoad.idfk.util.TileGrid
+import net.exoad.idfk.util.TileMapLoader
+import net.exoad.idfk.util.WorldObjectRegistry
 import kotlin.random.Random
 
 object WorldGenerator {
@@ -20,5 +24,41 @@ object WorldGenerator {
                 }
             }
         }
+    }
+
+    fun generateWorld(
+        width: Int,
+        height: Int,
+        textureIndices: IntArray,
+        spawnX: Float,
+        spawnY: Float,
+        tileSetComponent: TileSetComponent,
+        name: String,
+        tileSize: Int = 16
+    ): World {
+        val objectGrid = TileGrid(width, height)
+        val treePositions = NoiseBasedWorldGenerator.generateTreePositions(
+            width = width,
+            height = height,
+            treeDensity = 0.15f,
+            seed = System.currentTimeMillis()
+        )
+        for ((treeX, treeY) in treePositions) {
+            WorldObjectRegistry.instantiate("tree")?.let {
+                objectGrid.placeObject(treeX, treeY, it)
+            }
+        }
+        objectGrid.removeObject(spawnX.toInt(), spawnY.toInt())
+        return World(
+            name = name,
+            tileMapComponent = TileMapLoader.createTileMapFromString(
+                generateWorldAsString(width, height, textureIndices),
+                tileSize = tileSize
+            ),
+            tileSetComponent = tileSetComponent,
+            objectGrid = objectGrid,
+            spawnX = spawnX,
+            spawnY = spawnY
+        )
     }
 }

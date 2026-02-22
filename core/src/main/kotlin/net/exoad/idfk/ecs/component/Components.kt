@@ -21,6 +21,16 @@ data class VelocityComponent(var x: Float = 0f, var y: Float = 0f) : Component
 
 data class SizeComponent(var width: Float, var height: Float) : Component
 
+data class CollisionComponent(
+    val width: Float,
+    val height: Float,
+    val offsetX: Float = 0f,
+    val offsetY: Float = 0f,
+    val blocking: Boolean = true
+) : Component
+
+data class MovementIntentComponent(var dx: Float = 0f, var dy: Float = 0f) : Component
+
 @JvmInline
 value class TextureComponent(val texturePath: Str) : Component
 
@@ -28,4 +38,3 @@ value class TextureComponent(val texturePath: Str) : Component
 value class IdComponent(val id: Str) : Component
 
 data class DirectionComponent(var direction: Direction = Direction.SOUTH) : Component
-
