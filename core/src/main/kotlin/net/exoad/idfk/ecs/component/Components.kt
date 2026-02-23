@@ -1,6 +1,7 @@
 package net.exoad.idfk.ecs.component
 
 import com.badlogic.ashley.core.Component
+import net.exoad.idfk.Bool
 import net.exoad.idfk.Str
 import net.exoad.idfk.world.Direction
 
@@ -26,7 +27,7 @@ data class CollisionComponent(
     val height: Float,
     val offsetX: Float = 0f,
     val offsetY: Float = 0f,
-    val blocking: Boolean = true
+    val blocking: Bool = true
 ) : Component
 
 data class MovementIntentComponent(var dx: Float = 0f, var dy: Float = 0f) : Component

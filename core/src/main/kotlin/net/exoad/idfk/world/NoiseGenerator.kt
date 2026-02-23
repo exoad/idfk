@@ -1,5 +1,6 @@
 package net.exoad.idfk.world
 
+import net.exoad.idfk.Str
 import kotlin.math.floor
 import kotlin.random.Random
 
@@ -111,15 +112,15 @@ object NoiseBasedWorldGenerator {
         val rng = Random(seed)
         for (y in 0 until height) {
             for (x in 0 until width) {
-                val probability = (PerlinNoiseGenerator.fractionalBrownianMotion(
-                    x = x * scale,
-                    y = y * scale,
-                    octaves = 3,
-                    persistence = 0.6f,
-                    lacunarity = 2f
-                ) + 1f) / 2f
-                if (probability > 0.5f && rng.nextFloat() < density) {
-                    positions.add(Pair(x, y))
+                if ((PerlinNoiseGenerator.fractionalBrownianMotion(
+                        x = x * scale,
+                        y = y * scale,
+                        octaves = 3,
+                        persistence = 0.6f,
+                        lacunarity = 2f
+                    ) + 1f) / 2f > 0.5f && rng.nextFloat() < density
+                ) {
+                    positions.add(x to y)
                 }
             }
         }
@@ -147,7 +148,7 @@ object NoiseBasedWorldGenerator {
         density: Float = 0.3f,
         scale: Float = 0.1f,
         seed: Long = System.currentTimeMillis(),
-        objectType: String = "object"
+        objectType: Str = "object"
     ): List<Pair<Int, Int>> {
         val typedSeed = seed + objectType.hashCode()
         return generateObjectPositions(

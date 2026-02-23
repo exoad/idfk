@@ -1,12 +1,14 @@
 package net.exoad.idfk.world
 
+import net.exoad.idfk.Shared
+import net.exoad.idfk.Str
 import net.exoad.idfk.ecs.component.TileSetComponent
 import net.exoad.idfk.util.SpriteRegistry
 import net.exoad.idfk.util.SpriteRegistry.getSheetPathByKey
 import net.exoad.idfk.util.WorldObjectRegistry
 
 object WorldManager {
-    private val worlds = mutableMapOf<String, World>()
+    private val worlds = mutableMapOf<Str, World>()
 
     init {
         with(SpriteRegistry) {
@@ -47,16 +49,16 @@ object WorldManager {
             textureIndices = intArrayOf(1, 2, 3, 4, 5),
             spawnX = 0f,
             spawnY = 0f,
-            tileSetComponent = TileSetComponent(getSheetPathByKey("tiles"), 16),
+            tileSetComponent = TileSetComponent(getSheetPathByKey("tiles"), Shared.World.TILE_SIZE),
             name = "base"
         )
     }
 
-    operator fun get(name: String): World {
+    operator fun get(name: Str): World {
         return worlds[name] ?: throw IllegalArgumentException("World '$name' not found.")
     }
 
-    operator fun set(key: String, world: World) {
+    operator fun set(key: Str, world: World) {
         worlds[key] = world
     }
 }

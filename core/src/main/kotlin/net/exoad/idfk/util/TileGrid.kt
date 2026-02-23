@@ -1,6 +1,7 @@
 package net.exoad.idfk.util
 
 import net.exoad.idfk.Bool
+import net.exoad.idfk.Shared
 import kotlin.math.ceil
 import kotlin.math.floor
 
@@ -40,7 +41,13 @@ class TileGrid(val width: Int, val height: Int) {
         return cells.flatMap { it.objects }
     }
 
-    fun isAreaBlocked(rectX: Float, rectY: Float, rectW: Float, rectH: Float, tileSize: Int = 16): Boolean {
+    fun isAreaBlocked(
+        rectX: Float,
+        rectY: Float,
+        rectW: Float,
+        rectH: Float,
+        tileSize: Int = Shared.World.TILE_SIZE
+    ): Bool {
         val startX = floor((rectX / tileSize).toDouble()).toInt().coerceIn(0, width - 1)
         val startY = floor((rectY / tileSize).toDouble()).toInt().coerceIn(0, height - 1)
         val endX = ceil(((rectX + rectW) / tileSize).toDouble()).toInt().minus(1).coerceIn(0, width - 1)
@@ -80,12 +87,11 @@ class TileGrid(val width: Int, val height: Int) {
         by: Float,
         bw: Float,
         bh: Float
-    ): Boolean {
-        // Use <= and >= to include edge touching as collision
+    ): Bool {
         return ax < bx + bw && ax + aw > bx && ay < by + bh && ay + ah > by
     }
 
-    fun isTileBlocked(x: Int, y: Int): Boolean {
+    fun isTileBlocked(x: Int, y: Int): Bool {
         return (getCell(x, y) ?: return true).objects.any { it.blocking }
     }
 }

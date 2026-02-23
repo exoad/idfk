@@ -4,13 +4,14 @@ import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Cursor
-import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import net.exoad.idfk.Shared
+import net.exoad.idfk.util.CoordinateConverter
 import net.exoad.idfk.util.SpriteRegistry
 
-class CrosshairSystem(
+class CrosshairRenderSystem(
     private val batch: SpriteBatch,
-    private val camera: OrthographicCamera
+    private val crosshairMovementSystem: CrosshairMovementSystem
 ) : EntitySystem(), DisposableSystem {
 
     init {
@@ -19,19 +20,19 @@ class CrosshairSystem(
     }
 
     override fun update(deltaTime: Float) {
-        val mouseX = Gdx.input.x.toFloat()
-        val mouseY = Gdx.input.y.toFloat()
-        val worldPos = camera.unproject(com.badlogic.gdx.math.Vector3(mouseX, mouseY, 0f))
         val crosshairRegion = SpriteRegistry.getRegion("crosshair")
         if (crosshairRegion != null) {
+            val crosshairTile = crosshairMovementSystem.getCrosshairTile()
+            val (centerX, centerY) = CoordinateConverter.getTileCenterWorldPixels(crosshairTile)
+            val tileSize = Shared.World.TILE_SIZE.toFloat()
             with(batch) {
                 color = Color.WHITE
                 draw(
                     crosshairRegion,
-                    worldPos.x - 32f,
-                    worldPos.y - 32f,
-                    64f,
-                    64f
+                    centerX - tileSize / 2f,
+                    centerY - tileSize / 2f,
+                    tileSize,
+                    tileSize
                 )
             }
         }

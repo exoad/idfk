@@ -1,5 +1,6 @@
 package net.exoad.idfk.world
 
+import net.exoad.idfk.Shared
 import net.exoad.idfk.Str
 import net.exoad.idfk.ecs.component.TileSetComponent
 import net.exoad.idfk.util.TileGrid
@@ -33,8 +34,8 @@ object WorldGenerator {
         spawnX: Float,
         spawnY: Float,
         tileSetComponent: TileSetComponent,
-        name: String,
-        tileSize: Int = 16
+        name: Str,
+        tileSize: Int = Shared.World.TILE_SIZE
     ): World {
         val objectGrid = TileGrid(width, height)
         val baseSeed = System.currentTimeMillis()
@@ -47,21 +48,6 @@ object WorldGenerator {
         for ((treeX, treeY) in treePositions) {
             WorldObjectRegistry.instantiate("tree")?.let {
                 objectGrid.placeObject(treeX, treeY, it)
-            }
-        }
-        val signPosts = NoiseBasedWorldGenerator.generateObjectPositionsWithSeed(
-            width = width,
-            height = height,
-            density = 0.12f,
-            scale = 0.08f,
-            seed = baseSeed,
-            objectType = "signPosts"
-        )
-        for ((stoneX, stoneY) in signPosts) {
-            if (objectGrid.getCell(stoneX, stoneY)?.objects?.isEmpty() != false) {
-                WorldObjectRegistry.instantiate("signPosts")?.let {
-                    objectGrid.placeObject(stoneX, stoneY, it)
-                }
             }
         }
         objectGrid.removeObject(spawnX.toInt(), spawnY.toInt())

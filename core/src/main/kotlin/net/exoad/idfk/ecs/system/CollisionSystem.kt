@@ -9,6 +9,7 @@ import net.exoad.idfk.ecs.component.CollisionComponent
 import net.exoad.idfk.ecs.component.MovementIntentComponent
 import net.exoad.idfk.ecs.component.PositionComponent
 import net.exoad.idfk.ecs.component.VelocityComponent
+import net.exoad.idfk.util.CoordinateConverter
 import net.exoad.idfk.world.WorldManager
 
 class CollisionSystem : IteratingSystem(
@@ -33,7 +34,7 @@ class CollisionSystem : IteratingSystem(
             val collisionY = position.y + collision.offsetY
             val newX = position.x + dx
             val newCollisionX = newX + collision.offsetX
-            if (!grid.isAreaBlocked(newCollisionX, collisionY, collision.width, collision.height, 16)) {
+            if (!grid.isAreaBlocked(newCollisionX, collisionY, collision.width, collision.height, CoordinateConverter.TILE_SIZE)) {
                 position.x = newX
             } else {
                 dx = 0f
@@ -41,7 +42,7 @@ class CollisionSystem : IteratingSystem(
             }
             val newY = position.y + dy
             val newCollisionY = newY + collision.offsetY
-            if (!grid.isAreaBlocked(collisionX, newCollisionY, collision.width, collision.height, 16)) {
+            if (!grid.isAreaBlocked(collisionX, newCollisionY, collision.width, collision.height, CoordinateConverter.TILE_SIZE)) {
                 position.y = newY
             } else {
                 dy = 0f

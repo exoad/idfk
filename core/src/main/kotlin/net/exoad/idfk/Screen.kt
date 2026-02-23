@@ -16,7 +16,6 @@ import net.exoad.idfk.factories.PlayerFactory
 import net.exoad.idfk.factories.TileMapFactory
 import net.exoad.idfk.util.SpriteSheet
 import net.exoad.idfk.world.WorldManager
-import org.tinylog.kotlin.Logger
 
 class Screen : KtxScreen {
     private val batch = SpriteBatch()
@@ -38,6 +37,7 @@ class Screen : KtxScreen {
         val font = generator.generateFont(FreeTypeFontParameter().apply { size = 16 })
         generator.dispose()
         tileRenderSystem = TileRenderSystem(batch, camera, shapeRenderer)
+        val crosshairMovementSystem = CrosshairMovementSystem()
         engine.attach {
             +CameraSystem(camera, batch)
             +tileRenderSystem
@@ -46,7 +46,10 @@ class Screen : KtxScreen {
             +MovementSystem()
             +CollisionSystem()
             +RenderSystem(batch, font)
-            +CrosshairSystem(batch, camera)
+            +crosshairMovementSystem
+            +CrosshairRenderSystem(batch, crosshairMovementSystem)
+            +SignPlacementSystem(crosshairMovementSystem)
+            +CrosshairDirectionSystem(crosshairMovementSystem)
         }
         val baseWorld = WorldManager["base"]
         TileMapFactory.createFromWorld(engine, baseWorld, Vec2(0f, 0f))
@@ -80,7 +83,6 @@ class Screen : KtxScreen {
             end()
         }
         if (Shared.DEBUG_MODE) {
-            Logger.debug("FPS: ${Gdx.graphics.framesPerSecond}")
             tileRenderSystem.drawCollisionBoxes()
             tileRenderSystem.drawEntityCollisionBoxes(engine.entities)
         }

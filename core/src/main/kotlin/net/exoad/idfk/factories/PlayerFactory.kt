@@ -2,6 +2,7 @@ package net.exoad.idfk.factories
 
 import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
+import net.exoad.idfk.Shared
 import net.exoad.idfk.Str
 import net.exoad.idfk.Vec2
 import net.exoad.idfk.ecs.attach
@@ -16,28 +17,24 @@ object PlayerFactory {
         id: Str = "player",
     ): Entity {
         assert(id.isNotBlank())
-        val playerSize = size ?: Vec2(16f, 16f)
-
-        // Get collision rect from SpriteRegistry if defined
-        val collisionRect = SpriteRegistry.getCollisionRect(id) ?: SpriteRegistry.getCollisionRect("player")
-
-        // Collision rects are already converted to bottom-left origin by defineCollisionRectConverted
-        // when they were defined in the DSL, so we use them directly
+        val playerSize = size ?: Vec2(Shared.World.TILE_SIZE.toFloat(), Shared.World.TILE_SIZE.toFloat())
         val player = Entity().attach {
             +IdComponent(id)
             +PositionComponent(position.x, position.y)
             +VelocityComponent(0f, 0f)
             +SizeComponent(playerSize.x, playerSize.y)
-            +CollisionComponent(
-                collisionRect?.width ?: playerSize.x,
-                collisionRect?.height ?: playerSize.y,
-                collisionRect?.offsetX ?: 0f,
-                collisionRect?.offsetY ?: 0f,
-                blocking = true
-            )
+            +with(SpriteRegistry.getCollisionRect(id)) {
+                CollisionComponent(
+                    width,
+                    height,
+                    offsetX,
+                    offsetY,
+                    blocking = true
+                )
+            }
             +MovementIntentComponent(0f, 0f)
             +DirectionComponent()
-            +AtlasComponent(SpriteRegistry.getSheetPath("player") ?: "player.png", 16, 16)
+            +AtlasComponent(SpriteRegistry.getSheetPath("player"), Shared.World.TILE_SIZE, Shared.World.TILE_SIZE)
             +AnimationComponent(intArrayOf(0), 0.15f, looping = true, isPlaying = false)
             +PlayerComponent()
         }

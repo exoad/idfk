@@ -22,7 +22,7 @@ object SpriteRegistry {
     private val collisionRects = mutableMapOf<Str, CollisionRect>()
 
     class SheetBuilder(val key: Str, val path: Str, val frameWidth: Int, val frameHeight: Int) {
-        private val localSprites = mutableListOf<Pair<String, () -> Unit>>()
+        private val localSprites = mutableListOf<Pair<Str, () -> Unit>>()
 
         fun sprite(
             name: Str,
@@ -78,8 +78,8 @@ object SpriteRegistry {
     }
 
     fun defineSpriteByGrid(name: Str, sheetKey: Str, gridX: Int, gridY: Int, cellWidth: Int = 1, cellHeight: Int = 1) {
-        val sheet =
-            sheets[sheetKey] ?: throw IllegalArgumentException("Sheet '$sheetKey' not found. Call defineSheet first.")
+        val sheet = sheets[sheetKey]
+                    ?: throw IllegalArgumentException("Sheet '$sheetKey' not found. Call defineSheet first.")
         sprites[name] = SpriteRef(
             name,
             sheetKey,
@@ -90,13 +90,13 @@ object SpriteRegistry {
     }
 
     fun defineGridSequence(sheetKey: Str, startGridX: Int, startGridY: Int, count: Int, namePrefix: Str): List<Str> {
-        val sheet =
-            sheets[sheetKey] ?: throw IllegalArgumentException("Sheet '$sheetKey' not found. Call defineSheet first.")
-        if (count <= 0) return emptyList()
-        val tex = SpriteSheet.texture(sheet.path)
-        val cols = tex.width / sheet.frameWidth
+        val sheet = sheets[sheetKey]
+                    ?: throw IllegalArgumentException("Sheet '$sheetKey' not found. Call defineSheet first.")
+        if (count <= 0) {
+            return emptyList()
+        }
         val names = mutableListOf<Str>()
-        var index = startGridY * cols + startGridX
+        var index = startGridY * (SpriteSheet.texture(sheet.path).width / sheet.frameWidth) + startGridX
         for (i in 0 until count) {
             val nm = "$namePrefix$i"
             sprites[nm] = SpriteRef(nm, sheetKey, index)
@@ -107,10 +107,9 @@ object SpriteRegistry {
     }
 
     fun defineSpritesByCoords(sheetKey: Str, coords: List<Pair<Int, Int>>, namePrefix: Str): List<Str> {
-        val sheet =
-            sheets[sheetKey] ?: throw IllegalArgumentException("Sheet '$sheetKey' not found. Call defineSheet first.")
-        val tex = SpriteSheet.texture(sheet.path)
-        val cols = tex.width / sheet.frameWidth
+        val sheet = sheets[sheetKey]
+                    ?: throw IllegalArgumentException("Sheet '$sheetKey' not found. Call defineSheet first.")
+        val cols = SpriteSheet.texture(sheet.path).width / sheet.frameWidth
         val names = mutableListOf<Str>()
         for ((i, coord) in coords.withIndex()) {
             val nm = "$namePrefix$i"
@@ -165,5 +164,4 @@ object SpriteRegistry {
         sprites.clear()
         collisionRects.clear()
     }
-
 }

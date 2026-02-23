@@ -1,5 +1,6 @@
 package net.exoad.idfk.util
 
+import net.exoad.idfk.Bool
 import net.exoad.idfk.Str
 import net.exoad.idfk.Vec2
 
@@ -14,7 +15,7 @@ object WorldObjectRegistry {
         val height: Float,
         val offsetX: Float,
         val offsetY: Float,
-        val blocking: Boolean = true
+        val blocking: Bool = true
     )
 
     private val types = mutableMapOf<Str, WorldObjectType>()
@@ -26,7 +27,7 @@ object WorldObjectRegistry {
         height: Float,
         offsetX: Float = 0f,
         offsetY: Float = 0f,
-        blocking: Boolean = true
+        blocking: Bool = true
     ): WorldObjectType {
         val objType = WorldObjectType(
             id = nextId++,
@@ -50,7 +51,7 @@ object WorldObjectRegistry {
         offsetY: Float = 0f,
         width: Float,
         height: Float,
-        blocking: Boolean = true
+        blocking: Bool = true
     ): WorldObjectType {
         val convertedOffset = CollisionRectConverter.convertFromTopLeft(
             Vec2(offsetX, offsetY),
@@ -74,7 +75,7 @@ object WorldObjectRegistry {
     fun registerFromSprite(
         type: Str,
         spriteName: Str,
-        blocking: Boolean = true
+        blocking: Bool = true
     ): WorldObjectType {
         val objType = with(SpriteRegistry.getCollisionRect(spriteName)) {
             WorldObjectType(
