@@ -10,35 +10,36 @@ object WorldManager {
 
     init {
         with(SpriteRegistry) {
-            sheet("items", "items.png", 16, 16) {
-                sprite("tree", 0, 0) {
+            sheet("objects", "objects.png", 16, 16) {
+                sprite("tree", gridX = 0, gridY = 0) {
                     offsetX = 1f
                     offsetY = 1f
                     width = 14f
                     height = 15f
                 }
-            }
-            sheet("tiles", "tiles.png", 16, 16) { }
-            sheet("player", "player.png", 16, 16) {
-                sprite("player", 0, 0) {
-                    offsetX = 4f
-                    offsetY = 1f
-                    width = 8f
-                    height = 14f
+                sprite("signPosts", gridX = 1, gridY = 0) {
+                    offsetX = 3f
+                    offsetY = 5f
+                    width = 10f
+                    height = 10f
                 }
             }
-        }
-        with(WorldObjectRegistry) {
-            registerConverted(
-                "tree",
-                "tree",
-                spriteHeight = 16f,
-                offsetX = 0f,
-                offsetY = 0f,
-                width = 16f,
-                height = 16f,
-                blocking = true
-            )
+            with(WorldObjectRegistry) {
+                registerFromSprite("tree", "tree", blocking = true)
+                registerFromSprite("signPosts", "signPosts", blocking = true)
+            }
+            sheet("tiles", "tiles.png", frameWidth = 16, frameHeight = 16) { }
+            sheet("player", "player.png", frameWidth = 16, frameHeight = 16) {
+                sprite("player", 0, 0) {
+                    offsetX = 4f
+                    offsetY = 6f
+                    width = 8f
+                    height = 8f
+                }
+            }
+            sheet("ui", "ui.png", frameWidth = 64, frameHeight = 64) {
+                sprite("crosshair", 0, 0) { }
+            }
         }
         worlds["base"] = WorldGenerator.generateWorld(
             width = 32,

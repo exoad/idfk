@@ -37,15 +37,31 @@ object WorldGenerator {
         tileSize: Int = 16
     ): World {
         val objectGrid = TileGrid(width, height)
+        val baseSeed = System.currentTimeMillis()
         val treePositions = NoiseBasedWorldGenerator.generateTreePositions(
             width = width,
             height = height,
             treeDensity = 0.15f,
-            seed = System.currentTimeMillis()
+            seed = baseSeed
         )
         for ((treeX, treeY) in treePositions) {
             WorldObjectRegistry.instantiate("tree")?.let {
                 objectGrid.placeObject(treeX, treeY, it)
+            }
+        }
+        val signPosts = NoiseBasedWorldGenerator.generateObjectPositionsWithSeed(
+            width = width,
+            height = height,
+            density = 0.12f,
+            scale = 0.08f,
+            seed = baseSeed,
+            objectType = "signPosts"
+        )
+        for ((stoneX, stoneY) in signPosts) {
+            if (objectGrid.getCell(stoneX, stoneY)?.objects?.isEmpty() != false) {
+                WorldObjectRegistry.instantiate("signPosts")?.let {
+                    objectGrid.placeObject(stoneX, stoneY, it)
+                }
             }
         }
         objectGrid.removeObject(spawnX.toInt(), spawnY.toInt())

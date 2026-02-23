@@ -71,6 +71,27 @@ object WorldObjectRegistry {
         return objType
     }
 
+    fun registerFromSprite(
+        type: Str,
+        spriteName: Str,
+        blocking: Boolean = true
+    ): WorldObjectType {
+        val objType = with(SpriteRegistry.getCollisionRect(spriteName)) {
+            WorldObjectType(
+                id = nextId++,
+                type = type,
+                spriteName = spriteName,
+                width = this.width,
+                height = this.height,
+                offsetX = this.offsetX,
+                offsetY = this.offsetY,
+                blocking = blocking
+            )
+        }
+        types[type] = objType
+        return objType
+    }
+
     fun get(type: Str): WorldObjectType? {
         return types[type]
     }
@@ -99,4 +120,3 @@ object WorldObjectRegistry {
         nextId = 1
     }
 }
-

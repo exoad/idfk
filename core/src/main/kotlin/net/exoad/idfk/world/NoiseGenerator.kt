@@ -140,5 +140,23 @@ object NoiseBasedWorldGenerator {
             seed = seed
         )
     }
+
+    fun generateObjectPositionsWithSeed(
+        width: Int,
+        height: Int,
+        density: Float = 0.3f,
+        scale: Float = 0.1f,
+        seed: Long = System.currentTimeMillis(),
+        objectType: String = "object"
+    ): List<Pair<Int, Int>> {
+        val typedSeed = seed + objectType.hashCode()
+        return generateObjectPositions(
+            width = width,
+            height = height,
+            density = density,
+            scale = scale,
+            seed = typedSeed
+        )
+    }
 }
 
